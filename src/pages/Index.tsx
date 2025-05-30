@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Calculator, Youtube, MessageCircle, Camera, Map, Monitor, Mic, Users, BookOpen, Brain, Zap, Target } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Index = () => {
   const features = [
@@ -12,56 +13,64 @@ const Index = () => {
       title: "Real-Time Math/Science Verifier",
       description: "Write or type math steps → get instant feedback with symbolic solving and step-by-step validation",
       color: "bg-blue-500",
-      features: ["SymPy Integration", "LaTeX Support", "Handwriting OCR", "Voice Input"]
+      features: ["SymPy Integration", "LaTeX Support", "Handwriting OCR", "Voice Input"],
+      link: "/math-verifier"
     },
     {
       icon: Youtube,
       title: "Smart YouTube + PDF Summarizer",
       description: "Transform videos and documents into smart study aids with auto-generated summaries and quizzes",
       color: "bg-red-500",
-      features: ["Chapter Summaries", "Auto MCQs", "Flashcards", "Video Search"]
+      features: ["Chapter Summaries", "Auto MCQs", "Flashcards", "Video Search"],
+      link: "/study-summarizer"
     },
     {
       icon: MessageCircle,
       title: "Conversational AI Tutor",
       description: "Interactive AI tutor supporting voice, chat, and image inputs with personalized explanations",
       color: "bg-green-500",
-      features: ["Multilingual", "Step-by-step", "Visual Explanations", "Personalized"]
+      features: ["Multilingual", "Step-by-step", "Visual Explanations", "Personalized"],
+      link: "/ai-tutor"
     },
     {
       icon: Camera,
       title: "Homework Scanner + Feedback",
       description: "Scan written work for instant feedback on correctness, missing steps, and areas to improve",
       color: "bg-purple-500",
-      features: ["Photo Scanning", "Logic Checking", "Missing Steps", "Weak Areas"]
+      features: ["Photo Scanning", "Logic Checking", "Missing Steps", "Weak Areas"],
+      link: "/homework-scanner"
     },
     {
       icon: Map,
       title: "Study Roadmap Generator",
       description: "Auto-generate personalized learning paths with progress tracking and milestone monitoring",
       color: "bg-orange-500",
-      features: ["Custom Roadmaps", "Progress Tracking", "Micro-steps", "Goal Setting"]
+      features: ["Custom Roadmaps", "Progress Tracking", "Micro-steps", "Goal Setting"],
+      link: "/study-roadmap"
     },
     {
       icon: Monitor,
       title: "Software Learning Monitor",
       description: "Live screen monitoring with visual guidance for learning software tools and programming",
       color: "bg-cyan-500",
-      features: ["Screen Tracking", "UI Guidance", "Step Verification", "Visual Helpers"]
+      features: ["Screen Tracking", "UI Guidance", "Step Verification", "Visual Helpers"],
+      link: "/software-monitor"
     },
     {
       icon: Mic,
       title: "AI Voice + Drawing Tutor",
       description: "Interactive voice tutor that can speak, listen, and draw diagrams in real-time",
       color: "bg-pink-500",
-      features: ["TTS Voice", "STT Input", "Live Drawing", "Multilingual"]
+      features: ["TTS Voice", "STT Input", "Live Drawing", "Multilingual"],
+      link: "/voice-tutor"
     },
     {
       icon: Users,
       title: "Weekly Human Mentor Sessions",
       description: "One-on-one video calls with real mentors for personalized guidance and motivation",
       color: "bg-indigo-500",
-      features: ["1-on-1 Calls", "Progress Review", "Motivation Support", "Scheduling"]
+      features: ["1-on-1 Calls", "Progress Review", "Motivation Support", "Scheduling"],
+      link: "/mentor-sessions"
     }
   ];
 
@@ -78,14 +87,14 @@ const Index = () => {
       <header className="bg-white/80 backdrop-blur-sm border-b sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
+            <Link to="/" className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
                 <Brain className="w-5 h-5 text-white" />
               </div>
               <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 EduAI Pro
               </h1>
-            </div>
+            </Link>
             <nav className="hidden md:flex space-x-6">
               <a href="#features" className="text-gray-600 hover:text-blue-600 transition-colors">Features</a>
               <a href="#pricing" className="text-gray-600 hover:text-blue-600 transition-colors">Pricing</a>
@@ -145,28 +154,30 @@ const Index = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
           {features.map((feature, index) => (
-            <Card key={index} className="group hover:shadow-xl transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm hover:scale-105">
-              <CardHeader>
-                <div className="flex items-center space-x-3 mb-3">
-                  <div className={`w-12 h-12 ${feature.color} rounded-xl flex items-center justify-center text-white`}>
-                    <feature.icon className="w-6 h-6" />
+            <Link key={index} to={feature.link}>
+              <Card className="group hover:shadow-xl transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm hover:scale-105 cursor-pointer h-full">
+                <CardHeader>
+                  <div className="flex items-center space-x-3 mb-3">
+                    <div className={`w-12 h-12 ${feature.color} rounded-xl flex items-center justify-center text-white`}>
+                      <feature.icon className="w-6 h-6" />
+                    </div>
+                    <CardTitle className="text-xl font-bold text-gray-800">{feature.title}</CardTitle>
                   </div>
-                  <CardTitle className="text-xl font-bold text-gray-800">{feature.title}</CardTitle>
-                </div>
-                <CardDescription className="text-gray-600 text-base leading-relaxed">
-                  {feature.description}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-wrap gap-2">
-                  {feature.features.map((feat, idx) => (
-                    <Badge key={idx} variant="secondary" className="bg-gradient-to-r from-blue-50 to-purple-50 text-blue-700 border-blue-200">
-                      {feat}
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                  <CardDescription className="text-gray-600 text-base leading-relaxed">
+                    {feature.description}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-wrap gap-2">
+                    {feature.features.map((feat, idx) => (
+                      <Badge key={idx} variant="secondary" className="bg-gradient-to-r from-blue-50 to-purple-50 text-blue-700 border-blue-200">
+                        {feat}
+                      </Badge>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
           ))}
         </div>
 
@@ -213,12 +224,12 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <div className="flex items-center space-x-2 mb-4">
+              <Link to="/" className="flex items-center space-x-2 mb-4">
                 <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
                   <Brain className="w-5 h-5 text-white" />
                 </div>
                 <h4 className="text-xl font-bold">EduAI Pro</h4>
-              </div>
+              </Link>
               <p className="text-gray-400">AI-powered education for the next generation of learners.</p>
             </div>
             <div>
