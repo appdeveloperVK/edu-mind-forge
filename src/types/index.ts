@@ -1,15 +1,26 @@
 
-// Core types for the education platform
+// Core Types for AI Education Platform
+
 export interface User {
   id: string;
   email: string;
   name: string;
-  grade?: string;
-  subjects?: string[];
-  learningStyle?: 'visual' | 'auditory' | 'kinesthetic';
-  preferredLanguage?: string;
+  role: 'student' | 'mentor' | 'admin';
+  preferences: {
+    language: string;
+    learningStyle: 'visual' | 'auditory' | 'kinesthetic';
+    subjects: string[];
+  };
   createdAt: Date;
-  updatedAt: Date;
+}
+
+export interface MathStep {
+  id: string;
+  stepNumber: number;
+  expression: string;
+  isCorrect: boolean;
+  feedback: string;
+  explanation?: string;
 }
 
 export interface MathProblem {
@@ -24,35 +35,12 @@ export interface MathProblem {
   createdAt: Date;
 }
 
-export interface MathStep {
-  id: string;
-  stepNumber: number;
-  expression: string;
-  isCorrect: boolean;
-  feedback?: string;
-  explanation?: string;
-}
-
-export interface StudyMaterial {
-  id: string;
-  userId: string;
-  title: string;
-  type: 'youtube' | 'pdf' | 'document';
-  url?: string;
-  content: string;
-  summary: string;
-  chapters: Chapter[];
-  flashcards: Flashcard[];
-  quizzes: Quiz[];
-  createdAt: Date;
-}
-
 export interface Chapter {
   id: string;
   title: string;
   summary: string;
   keyPoints: string[];
-  timestamp?: number; // for YouTube videos
+  timestamp?: number; // For video content
 }
 
 export interface Flashcard {
@@ -72,82 +60,101 @@ export interface Quiz {
   explanation: string;
 }
 
-export interface TutorSession {
+export interface StudyMaterial {
   id: string;
   userId: string;
-  messages: TutorMessage[];
-  subject: string;
-  status: 'active' | 'completed';
-  startTime: Date;
-  endTime?: Date;
+  title: string;
+  type: 'youtube' | 'pdf' | 'text';
+  url?: string;
+  content: string;
+  summary: string;
+  chapters: Chapter[];
+  flashcards: Flashcard[];
+  quizzes: Quiz[];
+  createdAt: Date;
 }
 
-export interface TutorMessage {
+export interface ConversationMessage {
   id: string;
   role: 'user' | 'assistant';
   content: string;
-  type: 'text' | 'voice' | 'image';
   timestamp: Date;
   attachments?: string[];
+}
+
+export interface TutorSession {
+  id: string;
+  userId: string;
+  subject: string;
+  messages: ConversationMessage[];
+  learningObjectives: string[];
+  progress: number;
+  createdAt: Date;
+}
+
+export interface HomeworkItem {
+  id: string;
+  question: string;
+  imageUrl?: string;
+  subject: string;
+  difficulty: 'easy' | 'medium' | 'hard';
+  solution: string;
+  steps: string[];
+  feedback: string;
 }
 
 export interface HomeworkSubmission {
   id: string;
   userId: string;
-  imageUrl: string;
-  extractedText: string;
-  analysis: HomeworkAnalysis;
+  items: HomeworkItem[];
+  score: number;
   feedback: string[];
-  grade?: number;
   createdAt: Date;
 }
 
-export interface HomeworkAnalysis {
-  correctSteps: number;
-  totalSteps: number;
-  missingSteps: string[];
-  errors: HomeworkError[];
-  suggestions: string[];
-  weakAreas: string[];
+export interface LearningPath {
+  id: string;
+  title: string;
+  description: string;
+  prerequisites: string[];
+  estimatedDuration: number; // in hours
+  modules: LearningModule[];
 }
 
-export interface HomeworkError {
-  stepNumber: number;
-  errorType: 'calculation' | 'concept' | 'method';
+export interface LearningModule {
+  id: string;
+  title: string;
   description: string;
-  correction: string;
+  type: 'video' | 'reading' | 'exercise' | 'quiz';
+  content: string;
+  isCompleted: boolean;
+  difficulty: 'beginner' | 'intermediate' | 'advanced';
 }
 
 export interface StudyRoadmap {
   id: string;
   userId: string;
   subject: string;
-  goal: string;
-  difficulty: string;
-  estimatedDuration: number; // in weeks
-  modules: RoadmapModule[];
-  progress: number; // percentage
+  currentLevel: 'beginner' | 'intermediate' | 'advanced';
+  targetLevel: 'beginner' | 'intermediate' | 'advanced';
+  paths: LearningPath[];
+  progress: {
+    completedModules: number;
+    totalModules: number;
+    estimatedCompletion: Date;
+  };
   createdAt: Date;
 }
 
-export interface RoadmapModule {
+export interface SoftwareStep {
   id: string;
-  title: string;
+  stepNumber: number;
   description: string;
-  estimatedHours: number;
-  topics: RoadmapTopic[];
-  isCompleted: boolean;
-  completedAt?: Date;
-}
-
-export interface RoadmapTopic {
-  id: string;
-  title: string;
-  type: 'theory' | 'practice' | 'video' | 'quiz';
-  content: string;
-  resources: string[];
-  isCompleted: boolean;
-  completedAt?: Date;
+  expectedAction: string;
+  userAction?: string;
+  isCorrect: boolean;
+  screenshot?: string;
+  feedback: string;
 }
 
 export interface SoftwareTutorial {
@@ -155,36 +162,16 @@ export interface SoftwareTutorial {
   userId: string;
   software: string;
   task: string;
-  steps: TutorialStep[];
-  currentStep: number;
+  steps: SoftwareStep[];
   isCompleted: boolean;
-  screenRecording?: string;
-  createdAt: Date;
-}
-
-export interface TutorialStep {
-  id: string;
-  instruction: string;
-  expectedAction: string;
-  screenshot?: string;
-  isCompleted: boolean;
-  hints: string[];
-}
-
-export interface VoiceSession {
-  id: string;
-  userId: string;
-  transcript: string;
-  audioUrl?: string;
-  drawings: Drawing[];
-  responses: VoiceResponse[];
-  language: string;
+  score: number;
+  timeSpent: number; // in seconds
   createdAt: Date;
 }
 
 export interface Drawing {
   id: string;
-  type: 'diagram' | 'formula' | 'graph';
+  type: 'diagram' | 'graph' | 'formula' | 'illustration';
   data: string; // SVG or canvas data
   description: string;
   timestamp: Date;
@@ -194,40 +181,45 @@ export interface VoiceResponse {
   id: string;
   text: string;
   audioUrl?: string;
+  requiresDrawing: boolean;
+  drawingData?: any;
   timestamp: Date;
+}
+
+export interface VoiceSession {
+  id: string;
+  userId: string;
+  transcript: string;
+  drawings: Drawing[];
+  responses: VoiceResponse[];
+  language: string;
+  createdAt: Date;
 }
 
 export interface MentorSession {
   id: string;
-  userId: string;
+  studentId: string;
   mentorId: string;
-  scheduledAt: Date;
-  duration: number; // in minutes
-  status: 'scheduled' | 'in-progress' | 'completed' | 'cancelled';
-  meetingUrl?: string;
-  agenda: string[];
-  notes?: string;
-  recording?: string;
-  feedback?: SessionFeedback;
-}
-
-export interface SessionFeedback {
-  mentorRating: number;
-  studentRating: number;
-  mentorNotes: string;
-  studentNotes: string;
-  nextSessionGoals: string[];
-}
-
-export interface Progress {
-  userId: string;
   subject: string;
-  totalProblems: number;
-  correctProblems: number;
-  averageAccuracy: number;
-  weakTopics: string[];
-  strongTopics: string[];
-  streakDays: number;
-  totalStudyTime: number; // in minutes
-  lastActive: Date;
+  status: 'scheduled' | 'in-progress' | 'completed' | 'cancelled';
+  scheduledTime: Date;
+  duration: number; // in minutes
+  notes: string;
+  feedback: {
+    strengths: string[];
+    improvements: string[];
+    nextSteps: string[];
+  };
+  meetingUrl?: string;
+  createdAt: Date;
+}
+
+export interface Notification {
+  id: string;
+  userId: string;
+  title: string;
+  message: string;
+  type: 'info' | 'success' | 'warning' | 'error';
+  isRead: boolean;
+  createdAt: Date;
 }

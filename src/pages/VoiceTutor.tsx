@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Mic, ArrowLeft, Volume2, Ear, Palette, Globe } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import VoiceTutorDemo from '../components/VoiceTutorDemo';
 
 const VoiceTutor = () => {
   return (
@@ -26,22 +27,9 @@ const VoiceTutor = () => {
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="container mx-auto px-4 py-16">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="w-16 h-16 bg-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
-            <Mic className="w-8 h-8 text-white" />
-          </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-800">
-            AI Voice & Drawing Tutor
-          </h1>
-          <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-            Interactive voice tutor that can speak, listen, and draw diagrams in real-time
-          </p>
-          <Button size="lg" className="bg-pink-600 hover:bg-pink-700 text-lg px-8 py-4">
-            Start Voice Session
-          </Button>
-        </div>
+      {/* Demo Section */}
+      <section className="container mx-auto px-4 py-8">
+        <VoiceTutorDemo />
       </section>
 
       {/* Voice Features */}
@@ -76,19 +64,6 @@ const VoiceTutor = () => {
               <CardDescription>Support for multiple languages and accents</CardDescription>
             </CardHeader>
           </Card>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="bg-gradient-to-r from-pink-600 to-purple-600 py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h3 className="text-3xl font-bold text-white mb-6">Experience Interactive Learning</h3>
-          <p className="text-xl text-pink-100 mb-8 max-w-2xl mx-auto">
-            Perfect for visual learners and non-English speakers
-          </p>
-          <Button size="lg" className="bg-white text-pink-600 hover:bg-gray-50 text-lg px-8 py-4">
-            Try Voice Tutor
-          </Button>
         </div>
       </section>
     </div>
